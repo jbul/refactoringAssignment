@@ -19,7 +19,7 @@ public class DeleteCustomerListener implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		boolean found = true, loop = true;
 
-		if (parent.customerList.isEmpty()) {
+		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "There are currently no customers to display. ");
 			parent.dispose();
 			parent.admin();
@@ -28,15 +28,15 @@ public class DeleteCustomerListener implements ActionListener {
 				Object customerID = JOptionPane.showInputDialog(parent.frame,
 						"Customer ID of Customer You Wish to Delete:");
 
-				for (Customer aCustomer : parent.customerList) {
-
-					if (aCustomer.getCustomerID().equals(customerID)) {
-						found = true;
-						parent.customer = aCustomer;
-						loop = false;
-					}
-				}
-
+				/*
+				 * for (Customer aCustomer : parent.customerList) {
+				 * 
+				 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
+				 * parent.customer = aCustomer; loop = false; } }
+				 */
+				
+				parent.customer = parent.getCustomerService().getCustomer(customerID);
+				
 				if (found == false) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 							JOptionPane.YES_NO_OPTION);
@@ -54,10 +54,11 @@ public class DeleteCustomerListener implements ActionListener {
 								"This customer has accounts. \n You must delete a customer's accounts before deleting a customer ",
 								"Oops!", JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						parent.customerList.remove(parent.customer);
+						parent.getCustomerService().remove(parent.customer);
 						JOptionPane.showMessageDialog(parent.frame, "Customer Deleted ", "Success.",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
+					
 				}
 
 			}

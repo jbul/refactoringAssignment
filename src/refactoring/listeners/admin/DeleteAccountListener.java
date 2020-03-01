@@ -22,15 +22,14 @@ public class DeleteAccountListener implements ActionListener {
 		{
 			Object customerID = JOptionPane.showInputDialog(parent.frame,
 					"Customer ID of Customer from which you wish to delete an account");
-
-			for (Customer aCustomer : parent.customerList) {
-
-				if (aCustomer.getCustomerID().equals(customerID)) {
-					found = true;
-					parent.customer = aCustomer;
-					loop = false;
-				}
-			}
+			/*
+			 * for (Customer aCustomer : parent.customerList) {
+			 * 
+			 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
+			 * parent.customer = aCustomer; loop = false; } }
+			 */
+			
+			parent.customer = parent.getCustomerService().getCustomer(customerID);
 
 			if (found == false) {
 				int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",

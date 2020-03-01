@@ -12,10 +12,12 @@ import refactoring.Customer;
 import refactoring.CustomerCurrentAccount;
 import refactoring.CustomerDepositAccount;
 import refactoring.Menu;
+import refactoring.service.AccountService;
 
 public class AccountButtonListener implements ActionListener{
 	
 	Menu parent;
+	AccountService accountService = new AccountService();
 	
 	public AccountButtonListener(Menu parent) {
 		this.parent = parent;
@@ -25,7 +27,7 @@ public class AccountButtonListener implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		parent.frame.dispose();
 
-		if (parent.customerList.isEmpty()) {
+		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!", JOptionPane.INFORMATION_MESSAGE);
 			parent.frame.dispose();
 			parent.admin();
@@ -37,14 +39,15 @@ public class AccountButtonListener implements ActionListener{
 			while (loop) {
 				Object customerID = JOptionPane.showInputDialog(parent.frame,
 						"Customer ID of Customer You Wish to Add an Account to:");
+				
+				parent.customer = parent.getCustomerService().getCustomer(customerID);
 
-				for (Customer aCustomer : parent.customerList) {
-
-					if (aCustomer.getCustomerID().equals(customerID)) {
-						found = true;
-						parent.customer = aCustomer;
-					}
-				}
+				/*
+				 * for (Customer aCustomer : parent.customerList) {
+				 * 
+				 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
+				 * parent.customer = aCustomer; } }
+				 */
 
 				if (found == false) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
@@ -69,12 +72,19 @@ public class AccountButtonListener implements ActionListener{
 						// create current account
 						boolean valid = true;
 						double balance = 0;
-						String number = String.valueOf(
-								"C" + (parent.customerList.indexOf(parent.customer) + 1) * 10 + (parent.customer.getAccounts().size() + 1));// this
-																														// simple algorithm generates the account number
+						String number = accountService.generateAccountNumber(parent.getCustomerService().indexOf(parent.customer), parent.customer.getAccounts().size(), false);
+						/*
+						 * String number = String.valueOf( "C" +
+						 * (parent.customerList.indexOf(parent.customer) + 1) * 10 +
+						 * (parent.customer.getAccounts().size() + 1));
+						 */
 						ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
-						int randomPIN = (int) (Math.random() * 9000) + 1000;
+					
+						int randomPIN = accountService.randomPin();
 						String pin = String.valueOf(randomPIN);
+						/*
+						 * int randomPIN = (int) (Math.random() * 9000) + 1000;
+						 */
 
 						ATMCard atm = new ATMCard(randomPIN, valid);
 
@@ -93,14 +103,13 @@ public class AccountButtonListener implements ActionListener{
 						// create deposit account
 
 						double balance = 0, interest = 0;
-						String number = String.valueOf(
-								"D" + (parent.customerList.indexOf(parent.customer) + 1) * 10 + (parent.customer.getAccounts().size() + 1));// this
-																														// simple
-																														// algorithm
-																														// generates
-																														// the
-																														// account
-																														// number
+						/*
+						 * String number = String.valueOf( "D" +
+						 * (parent.customerList.indexOf(parent.customer) + 1) * 10 +
+						 * (parent.customer.getAccounts().size() + 1));
+						 */
+						String number = accountService.generateAccountNumber(parent.getCustomerService().indexOf(parent.customer), parent.customer.getAccounts().size(), true);
+						// this simple algorithm generates the account number
 						ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 
 						CustomerDepositAccount deposit = new CustomerDepositAccount(interest, number, balance,

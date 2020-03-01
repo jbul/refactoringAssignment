@@ -24,4 +24,9 @@ public class CustomerDepositAccount extends CustomerAccount {
 		this.interestRate = interestRate;
 	}
 
+	@Override
+	public boolean isDeposit() {
+		return true;
+	}
+
 }

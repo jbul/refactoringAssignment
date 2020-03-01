@@ -34,7 +34,7 @@ public class EditCustomerButtonListener implements ActionListener{
 
 		boolean found = false;
 
-		if (parent.customerList.isEmpty()) {
+		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!",
 					JOptionPane.INFORMATION_MESSAGE);
 			parent.frame.dispose();
@@ -45,13 +45,14 @@ public class EditCustomerButtonListener implements ActionListener{
 			while (loop) {
 				Object customerID = JOptionPane.showInputDialog(parent.frame, "Enter Customer ID:");
 
-				for (Customer aCustomer : parent.customerList) {
-
-					if (aCustomer.getCustomerID().equals(customerID)) {
-						found = true;
-						parent.customer = aCustomer;
-					}
-				}
+				/*
+				 * for (Customer aCustomer : parent.customerList) {
+				 * 
+				 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
+				 * parent.customer = aCustomer; } }
+				 */
+				
+				parent.customer = parent.getCustomerService().getCustomer(customerID);
 
 				if (found == false) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",

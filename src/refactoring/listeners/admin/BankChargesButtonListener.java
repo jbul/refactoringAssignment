@@ -17,11 +17,15 @@ import refactoring.Customer;
 import refactoring.CustomerCurrentAccount;
 import refactoring.CustomerDepositAccount;
 import refactoring.Menu;
+import refactoring.listeners.general.ReturnButtonListener;
+import refactoring.service.AccountService;
 
 public class BankChargesButtonListener implements ActionListener {
 	
 	Menu parent;
-
+	
+	AccountService accountService = new AccountService();
+	
 	public BankChargesButtonListener(Menu parent) {
 		this.parent = parent;
 	}
@@ -32,7 +36,7 @@ public class BankChargesButtonListener implements ActionListener {
 
 		boolean found = false;
 
-		if (parent.customerList.isEmpty()) {
+		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!",
 					JOptionPane.INFORMATION_MESSAGE);
 			parent.frame.dispose();
@@ -43,16 +47,18 @@ public class BankChargesButtonListener implements ActionListener {
 				Object customerID = JOptionPane.showInputDialog(parent.frame,
 						"Customer ID of Customer You Wish to Apply Charges to:");
 
-				for (Customer aCustomer : parent.customerList) {
-
-					if (aCustomer.getCustomerID().equals(customerID)) {
-						found = true;
-						parent.customer = aCustomer;
-						loop = false;
-					}
-				}
-
-				if (found == false) {
+//				for (Customer aCustomer : parent.customerList) {
+//
+//					if (aCustomer.getCustomerID().equals(customerID)) {
+//						found = true;
+//						parent.customer = aCustomer;
+//						loop = false;
+//					}
+//				}
+				
+				parent.customer = parent.getCustomerService().getCustomer(customerID);
+				
+				if (parent.customer == null) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 							JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
@@ -104,49 +110,44 @@ public class BankChargesButtonListener implements ActionListener {
 						parent.frame.dispose();
 						parent.admin();
 					} else {
-
-						for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
-							if (parent.customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-								parent.customerAccount = parent.customer.getAccounts().get(i);
-							}
-						}
-
+						
 						continueButton.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent ae) {
 								String euro = "\u20ac";
-
-								if (parent.customerAccount instanceof CustomerDepositAccount) {
+								// TODO Fixed bug, account was not selected properly
+								for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
+									if (parent.customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+										parent.customerAccount = parent.customer.getAccounts().get(i);
+									}
+								}
+								
+								if (parent.customerAccount.isDeposit()) {
 
 									JOptionPane.showMessageDialog(parent.frame,
 											"25" + euro + " deposit account fee aplied.", "",
 											JOptionPane.INFORMATION_MESSAGE);
-									parent.customerAccount.setBalance(parent.customerAccount.getBalance() - 25);
-									JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance(),
-											"Success!", JOptionPane.INFORMATION_MESSAGE);
-								}
-
-								if (parent.customerAccount instanceof CustomerCurrentAccount) {
+									
+								} else {
+										
+								//if (parent.customerAccount instanceof CustomerCurrentAccount) {
 
 									JOptionPane.showMessageDialog(parent.frame,
 											"15" + euro + " current account fee aplied.", "",
 											JOptionPane.INFORMATION_MESSAGE);
-									parent.customerAccount.setBalance(parent.customerAccount.getBalance() - 25);
-									JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance(),
-											"Success!", JOptionPane.INFORMATION_MESSAGE);
+									
 								}
-
+								
+								// TODO Duplicated code in if statement, moved out. Only keeping message about number applied in if
+								accountService.applyFee(parent.customerAccount);
+								JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance(),
+										"Success!", JOptionPane.INFORMATION_MESSAGE);
+								
 								parent.frame.dispose();
 								parent.admin();
 							}
 						});
 
-						returnButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent ae) {
-								parent.frame.dispose();
-								parent.menuStart();
-							}
-						});
-
+						returnButton.addActionListener(new ReturnButtonListener(parent));
 					}
 				}
 			}

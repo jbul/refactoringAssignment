@@ -56,12 +56,12 @@ public class SummaryButtonListener implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		textPanel.add(scrollPane);
 
-		for (int a = 0; a < parent.customerList.size(); a++)// For each customer, for each account, it displays each
+		for (int a = 0; a < parent.getCustomerService().size(); a++)// For each customer, for each account, it displays each
 														// transaction.
 		{
-			for (int b = 0; b < parent.customerList.get(a).getAccounts().size(); b++) {
-				parent.customerAccount = parent.customerList.get(a).getAccounts().get(b);
-				for (int c = 0; c < parent.customerList.get(a).getAccounts().get(b).getTransactionList().size(); c++) {
+			for (int b = 0; b < parent.getCustomerService().get(a).getAccounts().size(); b++) {
+				parent.customerAccount = parent.getCustomerService().get(a).getAccounts().get(b);
+				for (int c = 0; c < parent.getCustomerService().get(a).getAccounts().get(b).getTransactionList().size(); c++) {
 
 					textArea.append(parent.customerAccount.getTransactionList().get(c).toString());
 					// Int total = acc.getTransactionList().get(c).getAmount(); //I was going to use

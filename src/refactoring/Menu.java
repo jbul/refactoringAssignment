@@ -23,17 +23,18 @@ import refactoring.listeners.customer.LodgementButtonListener;
 import refactoring.listeners.customer.StatementListener;
 import refactoring.listeners.customer.WithdrawButtonListener;
 import refactoring.listeners.general.ReturnButtonListener;
+import refactoring.service.CustomerService;
 
 import java.util.Date;
 import java.util.List;
 
 public class Menu extends JFrame {
 
-	public ArrayList<Customer> customerList = new ArrayList<Customer>();
+	//public ArrayList<Customer> customerList = new ArrayList<Customer>();
 	public int position = 0;
 	public String password;
 	public Customer customer = null;
-	public CustomerAccount customerAccount = new CustomerAccount();
+	public CustomerAccount customerAccount;
 	public JFrame frame, adminFrame;
 	public JLabel firstNameLabel, surnameLabel, pPPSLabel, dOBLabel;
 	public JTextField firstNameTextField, surnameTextField, pPSTextField, dOBTextField;
@@ -45,29 +46,36 @@ public class Menu extends JFrame {
 	JPanel panel2;
 	JButton addButton;
 	String PPS, firstName, surname, DOB, CustomerID;
-
+	
+	private CustomerService customerService = CustomerService.getInstance();
+	
 	public static void main(String[] args) {
 		Menu driver = new Menu();
 		
 		List<CustomerAccount> ca = new ArrayList<>(Arrays
-				.asList(new CustomerDepositAccount(1.5, "ID1234", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.customerList.add(new Customer("1234", "Bob", "Joack", "12091989", "ID1234", "1234", ca));
+				.asList(new CustomerDepositAccount(1.5, "D1234", 2000.0, new ArrayList<AccountTransaction>())));
+		ca.add(new CustomerCurrentAccount(new ATMCard(1234, true), "C1234", 2000.0, new ArrayList<AccountTransaction>()));
+		driver.getCustomerService().addCustomer(new Customer("1234", "Bob", "Joack", "12091989", "ID1234", "1234", ca));
 		
 		List<CustomerAccount> ca2 = new ArrayList<>(Arrays
 				.asList(new CustomerDepositAccount(1.5, "ID12345", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.customerList.add(new Customer("12345", "Sarah", "Croche", "12091989", "ID12345", "12345", ca2));
+		driver.getCustomerService().addCustomer(new Customer("12345", "Sarah", "Croche", "12091989", "ID12345", "12345", ca2));
 
 		List<CustomerAccount> ca3 = new ArrayList<>(Arrays
 				.asList(new CustomerDepositAccount(1.5, "ID12346", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.customerList.add(new Customer("12346", "Lara", "Clette", "12091989", "ID12346", "12346", ca3));
+		driver.getCustomerService().addCustomer(new Customer("12346", "Lara", "Clette", "12091989", "ID12346", "12346", ca3));
 
 		List<CustomerAccount> ca4 = new ArrayList<>(Arrays
 				.asList(new CustomerDepositAccount(1.5, "ID12347", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.customerList.add(new Customer("12347", "Dede", "Lirant", "12091989", "ID12347", "12347", ca4));
+		driver.getCustomerService().addCustomer(new Customer("12347", "Dede", "Lirant", "12091989", "ID12347", "12347", ca4));
 
 		driver.menuStart();
 	}
-
+	
+	public CustomerService getCustomerService() {
+		return customerService;
+	}
+	
 	public void menuStart() {
 		/*
 		 * The menuStart method asks the user if they are a new customer, an existing
@@ -155,7 +163,7 @@ public class Menu extends JFrame {
 				while (loop) {
 					
 					Object customerID = JOptionPane.showInputDialog(frame, "Enter Customer ID:");
-					customer = getCustomer(customerID);
+					customer = customerService.getCustomer(customerID);
 					
 					// TODO Replace found by customer null or not
 					if (customer == null) {
@@ -331,7 +339,7 @@ public class Menu extends JFrame {
 								Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
 										accounts);
 
-								customerList.add(customer);
+								getCustomerService().addCustomer(customer);
 
 								JOptionPane.showMessageDialog(frame,
 										"CustomerID = " + CustomerID + "\n Password = " + password, "Customer created.",
@@ -483,12 +491,24 @@ public class Menu extends JFrame {
 			for (int i = 0; i < cust.getAccounts().size(); i++) {
 				box.addItem(cust.getAccounts().get(i).getNumber());
 			}
-
-			for (int i = 0; i < cust.getAccounts().size(); i++) {
-				if (cust.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-					customerAccount = cust.getAccounts().get(i);
-				}
+			
+			if (customerAccount != null) {
+				box.setSelectedItem(customerAccount);
 			}
+			
+			box.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int i = 0; i < cust.getAccounts().size(); i++) {
+						if (cust.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+							customerAccount = cust.getAccounts().get(i);
+						}
+					}		
+				}
+			});
+			
+			
 			
 			boxPanel.add(box);
 			content = frame.getContentPane();
@@ -497,12 +517,7 @@ public class Menu extends JFrame {
 			content.add(boxPanel);
 			content.add(buttonPanel);
 
-			returnButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					frame.dispose();
-					menuStart();
-				}
-			});
+			returnButton.addActionListener(new ReturnButtonListener(this));
 
 			continueButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
@@ -576,14 +591,14 @@ public class Menu extends JFrame {
 	}
 	
 	
-	public Customer getCustomer(Object customerId) {
-		for (Customer customer : customerList) {
-			if (customer.getCustomerID().equals(customerId)) {
-				return customer;
-			}
-		}
-		return null;
-	}
+//	public Customer getCustomer(Object customerId) {
+//		for (Customer customer : customerList) {
+//			if (customer.getCustomerID().equals(customerId)) {
+//				return customer;
+//			}
+//		}
+//		return null;
+//	}
 }
 
 // TODO moved in proper methods

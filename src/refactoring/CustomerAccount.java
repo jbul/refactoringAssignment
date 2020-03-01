@@ -2,7 +2,8 @@ package refactoring;
 
 import java.util.ArrayList;
 
-public class CustomerAccount {
+// TODO CustomerAccount is abstract. Can only either be Deposit or Current
+public abstract class CustomerAccount {
 
 	String number;
 	double balance;
@@ -47,5 +48,6 @@ public class CustomerAccount {
 	public void setTransactionList(ArrayList transactionList) {
 		this.transactionList = transactionList;
 	}
-
+	
+	public abstract boolean isDeposit();
 }

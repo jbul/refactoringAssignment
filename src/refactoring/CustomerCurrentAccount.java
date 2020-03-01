@@ -25,4 +25,9 @@ public class CustomerCurrentAccount extends CustomerAccount {
 		this.atm = atm;
 	}
 
+	@Override
+	public boolean isDeposit() {
+		return false;
+	}
+
 }
