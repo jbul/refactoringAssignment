@@ -9,10 +9,12 @@ import javax.swing.JOptionPane;
 import refactoring.AccountTransaction;
 import refactoring.CustomerCurrentAccount;
 import refactoring.Menu;
+import refactoring.service.AccountService;
 
 public class WithdrawButtonListener implements ActionListener {
 
 	Menu parent;
+	AccountService accountService = new AccountService();
 
 	public WithdrawButtonListener(Menu parent) {
 		this.parent = parent;
@@ -60,7 +62,7 @@ public class WithdrawButtonListener implements ActionListener {
 		}
 		if (on == true) {
 			String balanceTest = JOptionPane.showInputDialog(parent.frame, "Enter amount you wish to withdraw (max 500):");
-			if (parent.isNumeric(balanceTest)) {
+			if (Menu.isNumeric(balanceTest)) {
 
 				withdraw = Double.parseDouble(balanceTest);
 				loop = false;
@@ -81,7 +83,9 @@ public class WithdrawButtonListener implements ActionListener {
 			}
 
 			String euro = "\u20ac";
-			parent.customerAccount.setBalance(parent.customerAccount.getBalance() - withdraw);
+			accountService.withdrawOperation(parent.customerAccount, withdraw);
+			//parent.customerAccount.setBalance(accountService.withdrawOperation(parent.customerAccount.getBalance(), withdraw));
+					//parent.customerAccount.getBalance() - withdraw);
 			// recording transaction:
 			// String date = new
 			// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());

@@ -16,16 +16,18 @@ import javax.swing.JPanel;
 
 import refactoring.Customer;
 import refactoring.Menu;
+import refactoring.listeners.general.ReturnButtonListener;
+import refactoring.service.AccountService;
 
-public class InterestButtonListener implements ActionListener{
-	
+public class InterestButtonListener implements ActionListener {
+
 	Menu parent;
+	AccountService accountService = new AccountService();
 
 	public InterestButtonListener(Menu parent) {
 		this.parent = parent;
 	}
-	
-	
+
 	public void actionPerformed(ActionEvent ae) {
 
 		boolean loop = true;
@@ -49,7 +51,7 @@ public class InterestButtonListener implements ActionListener{
 				 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
 				 * parent.customer = aCustomer; loop = false; } }
 				 */
-				
+
 				parent.customer = parent.getCustomerService().getCustomer(customerID);
 
 				if (found == false) {
@@ -121,25 +123,17 @@ public class InterestButtonListener implements ActionListener{
 
 								while (loop) {
 									String interestString = JOptionPane.showInputDialog(parent.frame,
-											"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");// the
-																																																					// isNumeric
-																																																					// method
-																																																					// tests
-																																																					// to
-																																																					// see
-																																																					// if
-																																																					// the
-																																																					// string
-																																																					// entered
-																																																					// was
-																																																					// numeric.
-									if (parent.isNumeric(interestString)) {
+											"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");
+									
+									// TODO Move isNumeric in external class ?
+									if (Menu.isNumeric(interestString)) {
 
 										interest = Double.parseDouble(interestString);
 										loop = false;
 
-										parent.customerAccount.setBalance(
-												parent.customerAccount.getBalance() + (parent.customerAccount.getBalance() * (interest / 100)));
+										accountService.applyInterest(parent.customerAccount, interest);
+										// parent.customerAccount.getBalance() + (parent.customerAccount.getBalance() *
+										// (interest / 100)));
 
 										JOptionPane.showMessageDialog(parent.frame,
 												interest + "% interest applied. \n new balance = "
@@ -159,12 +153,7 @@ public class InterestButtonListener implements ActionListener{
 							}
 						});
 
-						returnButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent ae) {
-								parent.frame.dispose();
-								parent.menuStart();
-							}
-						});
+						returnButton.addActionListener(new ReturnButtonListener(parent));
 
 					}
 				}
@@ -172,8 +161,6 @@ public class InterestButtonListener implements ActionListener{
 		}
 
 	}
-	
-	
 
 }
 

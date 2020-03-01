@@ -5,11 +5,24 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import refactoring.listeners.admin.AccountButtonListener;
 import refactoring.listeners.admin.BankChargesButtonListener;
@@ -25,12 +38,8 @@ import refactoring.listeners.customer.WithdrawButtonListener;
 import refactoring.listeners.general.ReturnButtonListener;
 import refactoring.service.CustomerService;
 
-import java.util.Date;
-import java.util.List;
-
 public class Menu extends JFrame {
 
-	//public ArrayList<Customer> customerList = new ArrayList<Customer>();
 	public int position = 0;
 	public String password;
 	public Customer customer = null;
@@ -135,19 +144,16 @@ public class Menu extends JFrame {
 				switch (user) {
 				case "New Customer":
 
-					/* if (user.equals("New Customer")) { */
 					newCustomerSwitch();
 					break;
 
 				// if user select ADMIN
 				case "Administrator":
-					/* if (user.equals("Administrator")) { */
 					adminSwitch();
 					break;
 
 				// if user selects CUSTOMER
 				case "Customer":
-					/* if (user.equals("Customer")) { */
 					customerSwitch();
 					break;
 				}

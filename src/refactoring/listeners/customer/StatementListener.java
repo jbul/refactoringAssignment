@@ -22,7 +22,6 @@ public class StatementListener implements ActionListener {
 	Menu parent;
 	
 	public StatementListener(Menu menu) {
-		// TODO Auto-generated constructor stub
 		parent = menu;
 	}
 	
@@ -80,8 +79,5 @@ public class StatementListener implements ActionListener {
 		});
 	
 		
-	}
-
-	
-	
+	}	
 }
