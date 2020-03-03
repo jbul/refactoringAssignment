@@ -49,7 +49,7 @@ public class AccountButtonListener implements ActionListener{
 				 * parent.customer = aCustomer; } }
 				 */
 
-				if (found == false) {
+				if (parent.customer == null) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 							JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {

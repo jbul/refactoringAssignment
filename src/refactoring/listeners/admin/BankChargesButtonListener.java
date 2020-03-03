@@ -34,8 +34,6 @@ public class BankChargesButtonListener implements ActionListener {
 
 		boolean loop = true;
 
-		boolean found = false;
-
 		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -47,15 +45,6 @@ public class BankChargesButtonListener implements ActionListener {
 				Object customerID = JOptionPane.showInputDialog(parent.frame,
 						"Customer ID of Customer You Wish to Apply Charges to:");
 
-//				for (Customer aCustomer : parent.customerList) {
-//
-//					if (aCustomer.getCustomerID().equals(customerID)) {
-//						found = true;
-//						parent.customer = aCustomer;
-//						loop = false;
-//					}
-//				}
-				
 				parent.customer = parent.getCustomerService().getCustomer(customerID);
 				
 				if (parent.customer == null) {
@@ -69,7 +58,10 @@ public class BankChargesButtonListener implements ActionListener {
 
 						parent.admin();
 					}
+					
 				} else {
+					loop = false;
+					
 					parent.frame.dispose();
 					parent.frame = new JFrame("Administrator Menu");
 					parent.frame.setSize(400, 300);

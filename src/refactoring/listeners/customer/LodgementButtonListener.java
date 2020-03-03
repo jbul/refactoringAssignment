@@ -59,7 +59,7 @@ public class LodgementButtonListener implements ActionListener {
 		}
 		if (on == true) {
 			String balanceTest = JOptionPane.showInputDialog(parent.frame, "Enter amount you wish to lodge:");
-			if (parent.isNumeric(balanceTest)) {
+			if (Menu.isNumeric(balanceTest)) {
 
 				balance = Double.parseDouble(balanceTest);
 				loop = false;

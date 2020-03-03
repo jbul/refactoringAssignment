@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import refactoring.Menu;
+import refactoring.listeners.general.ReturnButtonListener;
 
 public class StatementListener implements ActionListener {
 	
@@ -71,12 +72,7 @@ public class StatementListener implements ActionListener {
 		content.add(textPanel);
 		// content.add(returnPanel);
 
-		returnButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				parent.frame.dispose();
-				parent.customer(parent.cust);
-			}
-		});
+		returnButton.addActionListener(new ReturnButtonListener(parent));
 	
 		
 	}	

@@ -1,13 +1,14 @@
 package refactoring;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO CustomerAccount is abstract. Can only either be Deposit or Current
 public abstract class CustomerAccount {
 
 	String number;
 	double balance;
-	ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
+	List<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 
 	// Blank Constructor
 	public CustomerAccount() {
@@ -32,7 +33,7 @@ public abstract class CustomerAccount {
 		return this.balance;
 	}
 
-	public ArrayList getTransactionList() {
+	public List getTransactionList() {
 		return this.transactionList;
 	}
 

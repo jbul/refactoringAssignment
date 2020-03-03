@@ -55,36 +55,40 @@ public class Menu extends JFrame {
 	JPanel panel2;
 	JButton addButton;
 	String PPS, firstName, surname, DOB, CustomerID;
-	
+
 	private CustomerService customerService = CustomerService.getInstance();
-	
+
 	public static void main(String[] args) {
 		Menu driver = new Menu();
-		
-		List<CustomerAccount> ca = new ArrayList<>(Arrays
-				.asList(new CustomerDepositAccount(1.5, "D1234", 2000.0, new ArrayList<AccountTransaction>())));
-		ca.add(new CustomerCurrentAccount(new ATMCard(1234, true), "C1234", 2000.0, new ArrayList<AccountTransaction>()));
+
+		List<CustomerAccount> ca = new ArrayList<>(
+				Arrays.asList(new CustomerDepositAccount(1.5, "D1234", 2000.0, new ArrayList<AccountTransaction>())));
+		ca.add(new CustomerCurrentAccount(new ATMCard(1234, true), "C1234", 1000.0,
+				new ArrayList<AccountTransaction>()));
 		driver.getCustomerService().addCustomer(new Customer("1234", "Bob", "Joack", "12091989", "ID1234", "1234", ca));
-		
-		List<CustomerAccount> ca2 = new ArrayList<>(Arrays
-				.asList(new CustomerDepositAccount(1.5, "ID12345", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService().addCustomer(new Customer("12345", "Sarah", "Croche", "12091989", "ID12345", "12345", ca2));
 
-		List<CustomerAccount> ca3 = new ArrayList<>(Arrays
-				.asList(new CustomerDepositAccount(1.5, "ID12346", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService().addCustomer(new Customer("12346", "Lara", "Clette", "12091989", "ID12346", "12346", ca3));
+		List<CustomerAccount> ca2 = new ArrayList<>(
+				Arrays.asList(new CustomerDepositAccount(1.5, "ID12345", 2000.0, new ArrayList<AccountTransaction>())));
+		driver.getCustomerService()
+				.addCustomer(new Customer("12345", "Sarah", "Croche", "12091989", "ID12345", "12345", ca2));
 
-		List<CustomerAccount> ca4 = new ArrayList<>(Arrays
-				.asList(new CustomerDepositAccount(1.5, "ID12347", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService().addCustomer(new Customer("12347", "Dede", "Lirant", "12091989", "ID12347", "12347", ca4));
+		List<CustomerAccount> ca3 = new ArrayList<>(
+				Arrays.asList(new CustomerDepositAccount(1.5, "ID12346", 2000.0, new ArrayList<AccountTransaction>())));
+		driver.getCustomerService()
+				.addCustomer(new Customer("12346", "Lara", "Clette", "12091989", "ID12346", "12346", ca3));
+
+		List<CustomerAccount> ca4 = new ArrayList<>(
+				Arrays.asList(new CustomerDepositAccount(1.5, "ID12347", 2000.0, new ArrayList<AccountTransaction>())));
+		driver.getCustomerService()
+				.addCustomer(new Customer("12347", "Dede", "Lirant", "12091989", "ID12347", "12347", ca4));
 
 		driver.menuStart();
 	}
-	
+
 	public CustomerService getCustomerService() {
 		return customerService;
 	}
-	
+
 	public void menuStart() {
 		/*
 		 * The menuStart method asks the user if they are a new customer, an existing
@@ -115,17 +119,7 @@ public class Menu extends JFrame {
 		 */
 
 		addToPanel(userTypePanel, userType, "Administrator", "Administrator");
-
-		/*
-		 * userTypePanel.add(radioButton = new JRadioButton("Administrator"));
-		 * radioButton.setActionCommand("Administrator"); userType.add(radioButton);
-		 */
-
 		addToPanel(userTypePanel, userType, "New Customer", "New Customer");
-		/*
-		 * userTypePanel.add(radioButton = new JRadioButton("New Customer"));
-		 * radioButton.setActionCommand("New Customer"); userType.add(radioButton);
-		 */
 
 		JPanel continuePanel = new JPanel();
 		JButton continueButton = new JButton("Continue");
@@ -164,25 +158,25 @@ public class Menu extends JFrame {
 				boolean loop = true, loop2 = true;
 				boolean cont = false;
 				Customer customer = null;
-				
+
 				// Loop to find username
 				while (loop) {
-					
+
 					Object customerID = JOptionPane.showInputDialog(frame, "Enter Customer ID:");
 					customer = customerService.getCustomer(customerID);
-					
+
 					// TODO Replace found by customer null or not
 					if (customer == null) {
-						
+
 						int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 								JOptionPane.YES_NO_OPTION);
-						
+
 						if (reply == JOptionPane.YES_OPTION) {
-						
+
 							loop = true;
-						
+
 						} else if (reply == JOptionPane.NO_OPTION) {
-						
+
 							frame.dispose();
 							loop = false;
 							loop2 = false;
@@ -192,7 +186,7 @@ public class Menu extends JFrame {
 						loop = false;
 					}
 				}
-				
+
 				// Loop to check password
 				while (loop2) {
 					Object customerPassword = JOptionPane.showInputDialog(frame, "Enter Customer Password;");
@@ -201,13 +195,13 @@ public class Menu extends JFrame {
 					{
 						int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
 								JOptionPane.YES_NO_OPTION);
-						
+
 						if (reply == JOptionPane.YES_OPTION) {
-							
+
 							loop2 = true;
-							
+
 						} else if (reply == JOptionPane.NO_OPTION) {
-						
+
 							frame.dispose();
 							loop2 = false;
 							menuStart();
@@ -228,7 +222,7 @@ public class Menu extends JFrame {
 			private void adminSwitch() {
 				boolean loop = true, loop2 = true;
 				boolean cont = false;
-				
+
 				while (loop) {
 					Object adminUsername = JOptionPane.showInputDialog(frame, "Enter Administrator Username:");
 
@@ -410,15 +404,18 @@ public class Menu extends JFrame {
 		panels.add(generatePanel("Delete Account", new DeleteAccountListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Apply Bank Charges", new BankChargesButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Apply Interest", new InterestButtonListener(this), null, FlowLayout.LEFT));
-		panels.add(generatePanel("Edit existing Customer", new EditCustomerButtonListener(this), null, FlowLayout.LEFT));
+		panels.add(
+				generatePanel("Edit existing Customer", new EditCustomerButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Navigate Customer Collection", new NavigationListener(this), null, FlowLayout.LEFT));
-		panels.add(generatePanel("Display Summary Of All Accounts", new SummaryButtonListener(this), null, FlowLayout.LEFT));
-		panels.add(generatePanel("Add an Account to a Customer", new AccountButtonListener(this), null, FlowLayout.LEFT));
+		panels.add(generatePanel("Display Summary Of All Accounts", new SummaryButtonListener(this), null,
+				FlowLayout.LEFT));
+		panels.add(
+				generatePanel("Add an Account to a Customer", new AccountButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Exit Admin Menu", new ReturnButtonListener(this), null, FlowLayout.RIGHT));
 		// End refactoring panels
-		
-		addPanels(new GridLayout(10, 1), panels);
-		
+
+		addPanels(new GridLayout(10, 1), panels, "Please select an option");
+
 		/*
 		 * JLabel label1 = new JLabel("Please select an option");
 		 * 
@@ -426,8 +423,7 @@ public class Menu extends JFrame {
 		 * 
 		 * content.add(label1); for (JPanel p : panels) { content.add(p); }
 		 */
-		
-		
+
 		/*
 		 * content.add(label1); content.add(accountPanel);
 		 * content.add(bankChargesPanel); content.add(interestPanel);
@@ -436,27 +432,27 @@ public class Menu extends JFrame {
 		 * content.add(deleteAccountPanel); content.add(returnPanel);
 		 */
 	}
-	
+
 	private JPanel generatePanel(String title, ActionListener listener, Dimension size, int align) {
 		JPanel returnPanel = new JPanel(new FlowLayout(align));
 		JButton returnButton = new JButton(title);
 		returnPanel.add(returnButton);
 		returnButton.addActionListener(listener);
-		
+
 		if (size != null) {
 			returnPanel.setPreferredSize(size);
 		}
-		
+
 		return returnPanel;
 	}
-	
+
 	private JPanel generatePanelWithSize(String title, Dimension size, int align) {
 		JPanel lodgementPanel = new JPanel(new FlowLayout(align));
 		JButton lodgementButton = new JButton(title);
 		lodgementPanel.add(lodgementButton);
 		return lodgementPanel;
 	}
-	
+
 	public void customer(Customer e1) {
 		frame = new JFrame("Customer Menu");
 		// TODO Looks like a bug...
@@ -470,10 +466,10 @@ public class Menu extends JFrame {
 			}
 		});
 		frame.setVisible(true);
-		
+
 		// To be used in actionListeners
 		Menu context = this;
-		
+
 		if (cust.getAccounts().size() == 0) {
 			JOptionPane.showMessageDialog(frame,
 					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
@@ -497,25 +493,23 @@ public class Menu extends JFrame {
 			for (int i = 0; i < cust.getAccounts().size(); i++) {
 				box.addItem(cust.getAccounts().get(i).getNumber());
 			}
-			
+
 			if (customerAccount != null) {
 				box.setSelectedItem(customerAccount);
 			}
-			
+
 			box.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					for (int i = 0; i < cust.getAccounts().size(); i++) {
 						if (cust.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
 							customerAccount = cust.getAccounts().get(i);
 						}
-					}		
+					}
 				}
 			});
-			
-			
-			
+
 			boxPanel.add(box);
 			content = frame.getContentPane();
 			content.setLayout(new GridLayout(3, 1));
@@ -539,16 +533,20 @@ public class Menu extends JFrame {
 						}
 					});
 					frame.setVisible(true);
-					
+
 					List<JPanel> panels = new ArrayList<>();
 
-					panels.add(generatePanel("Display Bank Statement", new StatementListener(context), new Dimension(250, 20), FlowLayout.LEFT));
-					panels.add(generatePanel("Lodge money into account", new LodgementButtonListener(context), new Dimension(250, 20), FlowLayout.LEFT));
-					panels.add(generatePanel("Withdraw money from account", new WithdrawButtonListener(context), new Dimension(250, 20), FlowLayout.LEFT));
-					panels.add(generatePanel("Exit CustomerMenu", new ReturnButtonListener(context), null, FlowLayout.RIGHT));
-					
-					addPanels(new GridLayout(5, 1), panels);
-					
+					panels.add(generatePanel("Display Bank Statement", new StatementListener(context),
+							new Dimension(250, 20), FlowLayout.LEFT));
+					panels.add(generatePanel("Lodge money into account", new LodgementButtonListener(context),
+							new Dimension(250, 20), FlowLayout.LEFT));
+					panels.add(generatePanel("Withdraw money from account", new WithdrawButtonListener(context),
+							new Dimension(250, 20), FlowLayout.LEFT));
+					panels.add(generatePanel("Exit CustomerMenu", new ReturnButtonListener(context), null,
+							FlowLayout.RIGHT));
+
+					addPanels(new GridLayout(5, 1), panels, "Please select an option");
+
 //					JLabel label1 = new JLabel("Please select an option");
 //
 //					content = frame.getContentPane();
@@ -558,32 +556,32 @@ public class Menu extends JFrame {
 //					for (JPanel jp: panels) {
 //						content.add(jp);
 //					}
-					
+
 					/*
 					 * content.add(statementPanel); content.add(lodgementPanel);
 					 * content.add(withdrawalPanel); content.add(returnPanel);
 					 */
 
-					
 				}
 			});
 		}
 	}
-	
-	private void addPanels(GridLayout layout, List<JPanel> panels) {
-		JLabel label1 = new JLabel("Please select an option");
+
+	private void addPanels(GridLayout layout, List<JPanel> panels, String title) {
+		JLabel label1 = new JLabel(title);// change it to title var
 
 		content = frame.getContentPane();
 		content.setLayout(layout);
 		content.add(label1);
-		
-		for (JPanel jp: panels) {
+
+		for (JPanel jp : panels) {
 			content.add(jp);
 		}
 	}
-	
+
 	/**
 	 * A method that tests if a string is numeric
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -595,8 +593,7 @@ public class Menu extends JFrame {
 		}
 		return true;
 	}
-	
-	
+
 //	public Customer getCustomer(Object customerId) {
 //		for (Customer customer : customerList) {
 //			if (customer.getCustomerID().equals(customerId)) {
@@ -627,4 +624,3 @@ public class Menu extends JFrame {
 //JButton returnButton = new JButton("Exit Customer Menu");
 //returnPanel.add(returnButton);
 //returnButton.addActionListener(new ReturnButtonListener(context));
-

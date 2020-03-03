@@ -16,17 +16,17 @@ import javax.swing.SwingConstants;
 import refactoring.Menu;
 
 public class NavigationListener implements ActionListener {
-	
+
 	Menu parent;
-	
+
 	public NavigationListener(Menu parent) {
 		this.parent = parent;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		parent.frame.dispose();
-		
+
 		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "There are currently no customers to display. ");
 			parent.admin();
@@ -42,7 +42,7 @@ public class NavigationListener implements ActionListener {
 			buttonPanel = new JPanel();
 			gridPanel = new JPanel(new GridLayout(8, 2));
 			cancelPanel = new JPanel();
-			
+
 			// TODO Redundant with summaryButton actionListener
 			parent.firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 			parent.surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
@@ -63,7 +63,7 @@ public class NavigationListener implements ActionListener {
 			last = new JButton("Last");
 			cancel = new JButton("Cancel");
 
-			setDetails();
+			setDetails(0);
 
 			parent.firstNameTextField.setEditable(false);
 			parent.surnameTextField.setEditable(false);
@@ -98,7 +98,7 @@ public class NavigationListener implements ActionListener {
 			first.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					parent.position = 0;
-					setDetails();
+					setDetails(0);
 				}
 			});
 
@@ -109,23 +109,9 @@ public class NavigationListener implements ActionListener {
 						// don't do anything
 					} else {
 						parent.position = parent.position - 1;
-						
-						setDetails();
 
-						/*
-						 * parent.firstNameTextField.setText(parent.getCustomerService().get(parent.
-						 * position).getFirstName());
-						 * parent.surnameTextField.setText(parent.getCustomerService().get(parent.
-						 * position).getSurname());
-						 * parent.pPSTextField.setText(parent.getCustomerService().get(parent.position).
-						 * getPPS());
-						 * parent.dOBTextField.setText(parent.getCustomerService().get(parent.position).
-						 * getDOB());
-						 * parent.customerIDTextField.setText(parent.getCustomerService().get(parent.
-						 * position).getCustomerID());
-						 * parent.passwordTextField.setText(parent.getCustomerService().get(parent.
-						 * position).getPassword());
-						 */
+						setDetails(parent.position);
+
 					}
 				}
 			});
@@ -137,8 +123,7 @@ public class NavigationListener implements ActionListener {
 						// don't do anything
 					} else {
 						parent.position = parent.position + 1;
-						
-						setDetails();
+						setDetails(parent.position);
 
 					}
 
@@ -149,13 +134,7 @@ public class NavigationListener implements ActionListener {
 				public void actionPerformed(ActionEvent ae) {
 
 					parent.position = parent.getCustomerService().size() - 1;
-
-					parent.firstNameTextField.setText(parent.getCustomerService().get(parent.position).getFirstName());
-					parent.surnameTextField.setText(parent.getCustomerService().get(parent.position).getSurname());
-					parent.pPSTextField.setText(parent.getCustomerService().get(parent.position).getPPS());
-					parent.dOBTextField.setText(parent.getCustomerService().get(parent.position).getDOB());
-					parent.customerIDTextField.setText(parent.getCustomerService().get(parent.position).getCustomerID());
-					parent.passwordTextField.setText(parent.getCustomerService().get(parent.position).getPassword());
+					setDetails(parent.position);
 				}
 			});
 
@@ -171,13 +150,13 @@ public class NavigationListener implements ActionListener {
 		}
 	}
 
-	private void setDetails() {
-		parent.firstNameTextField.setText(parent.getCustomerService().get(0).getFirstName());
-		parent.surnameTextField.setText(parent.getCustomerService().get(0).getSurname());
-		parent.pPSTextField.setText(parent.getCustomerService().get(0).getPPS());
-		parent.dOBTextField.setText(parent.getCustomerService().get(0).getDOB());
-		parent.customerIDTextField.setText(parent.getCustomerService().get(0).getCustomerID());
-		parent.passwordTextField.setText(parent.getCustomerService().get(0).getPassword());
+	private void setDetails(int position) {
+		parent.firstNameTextField.setText(parent.getCustomerService().get(position).getFirstName());
+		parent.surnameTextField.setText(parent.getCustomerService().get(position).getSurname());
+		parent.pPSTextField.setText(parent.getCustomerService().get(position).getPPS());
+		parent.dOBTextField.setText(parent.getCustomerService().get(position).getDOB());
+		parent.customerIDTextField.setText(parent.getCustomerService().get(position).getCustomerID());
+		parent.passwordTextField.setText(parent.getCustomerService().get(position).getPassword());
 	}
 
 }

@@ -54,7 +54,7 @@ public class InterestButtonListener implements ActionListener {
 
 				parent.customer = parent.getCustomerService().getCustomer(customerID);
 
-				if (found == false) {
+				if (parent.customer == null) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 							JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
@@ -66,6 +66,7 @@ public class InterestButtonListener implements ActionListener {
 						parent.admin();
 					}
 				} else {
+					loop = false;
 					parent.frame.dispose();
 					parent.frame = new JFrame("Administrator Menu");
 					parent.frame.setSize(400, 300);
@@ -121,6 +122,12 @@ public class InterestButtonListener implements ActionListener {
 								double interest = 0;
 								boolean loop = true;
 
+								for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
+									if (parent.customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+										parent.customerAccount = parent.customer.getAccounts().get(i);
+									}
+								}
+								
 								while (loop) {
 									String interestString = JOptionPane.showInputDialog(parent.frame,
 											"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");
