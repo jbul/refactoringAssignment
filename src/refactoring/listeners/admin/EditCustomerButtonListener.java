@@ -25,21 +25,18 @@ public class EditCustomerButtonListener implements ActionListener{
 	Menu parent;
 
 	public EditCustomerButtonListener(Menu parent) {
+//		super(parent);
 		this.parent = parent;
 	}
 	
 	public void actionPerformed(ActionEvent ae) {
-		//TODO that part same as accountbuttonlistener and accountbuttonlistener
 		boolean loop = true;
-
-		boolean found = false;
 
 		if (parent.getCustomerService().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!",
 					JOptionPane.INFORMATION_MESSAGE);
 			parent.frame.dispose();
 			parent.admin();
-
 		} else {
 			// TODO Extract in method that prompts and retrieves Customer
 			while (loop) {
@@ -54,7 +51,7 @@ public class EditCustomerButtonListener implements ActionListener{
 				
 				parent.customer = parent.getCustomerService().getCustomer(customerID);
 
-				if (found == false) {
+				if (parent.customer == null) {
 					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 							JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
@@ -62,7 +59,6 @@ public class EditCustomerButtonListener implements ActionListener{
 					} else if (reply == JOptionPane.NO_OPTION) {
 						parent.frame.dispose();
 						loop = false;
-
 						parent.admin();
 					}
 				} else {
@@ -163,8 +159,6 @@ public class EditCustomerButtonListener implements ActionListener{
 			});
 		}
 	}
-	
-
 }
 /*
  * 

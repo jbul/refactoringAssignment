@@ -393,24 +393,13 @@ public class Menu extends JFrame {
 		// TODO Same code everywhere, candidate for refactoring
 		List<JPanel> panels = new ArrayList<>();
 		panels.add(generatePanel("Delete Customer", new DeleteCustomerListener(this), null, FlowLayout.LEFT));
-		/*
-		 * JPanel deleteCustomerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		 * JButton deleteCustomer = new JButton("Delete Customer");
-		 * deleteCustomer.setPreferredSize(new Dimension(250, 20));
-		 * deleteCustomerPanel.add(deleteCustomer); deleteCustomer.addActionListener(new
-		 * DeleteCustomerListener(this));
-		 */
-
 		panels.add(generatePanel("Delete Account", new DeleteAccountListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Apply Bank Charges", new BankChargesButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Apply Interest", new InterestButtonListener(this), null, FlowLayout.LEFT));
-		panels.add(
-				generatePanel("Edit existing Customer", new EditCustomerButtonListener(this), null, FlowLayout.LEFT));
+		panels.add(generatePanel("Edit existing Customer", new EditCustomerButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Navigate Customer Collection", new NavigationListener(this), null, FlowLayout.LEFT));
-		panels.add(generatePanel("Display Summary Of All Accounts", new SummaryButtonListener(this), null,
-				FlowLayout.LEFT));
-		panels.add(
-				generatePanel("Add an Account to a Customer", new AccountButtonListener(this), null, FlowLayout.LEFT));
+		panels.add(generatePanel("Display Summary Of All Accounts", new SummaryButtonListener(this), null,FlowLayout.LEFT));
+		panels.add(generatePanel("Add an Account to a Customer", new AccountButtonListener(this), null, FlowLayout.LEFT));
 		panels.add(generatePanel("Exit Admin Menu", new ReturnButtonListener(this), null, FlowLayout.RIGHT));
 		// End refactoring panels
 
@@ -446,12 +435,6 @@ public class Menu extends JFrame {
 		return returnPanel;
 	}
 
-	private JPanel generatePanelWithSize(String title, Dimension size, int align) {
-		JPanel lodgementPanel = new JPanel(new FlowLayout(align));
-		JButton lodgementButton = new JButton(title);
-		lodgementPanel.add(lodgementButton);
-		return lodgementPanel;
-	}
 
 	public void customer(Customer e1) {
 		frame = new JFrame("Customer Menu");
@@ -493,9 +476,12 @@ public class Menu extends JFrame {
 			for (int i = 0; i < cust.getAccounts().size(); i++) {
 				box.addItem(cust.getAccounts().get(i).getNumber());
 			}
-
+			
+			// TODO Fix bug if continue is clicked without choosing anything. Account should be set to the first from list of accounts.
 			if (customerAccount != null) {
 				box.setSelectedItem(customerAccount);
+			} else {
+				customerAccount = cust.getAccounts().get(0);
 			}
 
 			box.addActionListener(new ActionListener() {
@@ -568,7 +554,7 @@ public class Menu extends JFrame {
 	}
 
 	private void addPanels(GridLayout layout, List<JPanel> panels, String title) {
-		JLabel label1 = new JLabel(title);// change it to title var
+		JLabel label1 = new JLabel(title);
 
 		content = frame.getContentPane();
 		content.setLayout(layout);

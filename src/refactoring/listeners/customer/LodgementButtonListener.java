@@ -1,6 +1,5 @@
 package refactoring.listeners.customer;
 
-import java.awt.event.ActionEvent;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
@@ -17,15 +16,12 @@ public class LodgementButtonListener extends TransactionButtonListener {
 	@Override
 	public AccountTransaction performTransaction(double number) {
 		parent.customerAccount.setBalance(parent.customerAccount.getBalance() + number);
-		// String date = new /
-		// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 		Date date = new Date();
 		String date2 = date.toString();
 		String type = "Lodgement";
 		double amount = number;
 
 		AccountTransaction transaction = new AccountTransaction(date2, type, amount);
-		// parent.customerAccount.getTransactionList().add(transaction);
 		return transaction;
 	}
 

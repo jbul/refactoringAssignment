@@ -17,7 +17,7 @@ public class DeleteAccountListener implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		boolean found = true, loop = true;
+		boolean loop = true;
 
 		{
 			Object customerID = JOptionPane.showInputDialog(parent.frame,
@@ -28,10 +28,10 @@ public class DeleteAccountListener implements ActionListener {
 			 * if (aCustomer.getCustomerID().equals(customerID)) { found = true;
 			 * parent.customer = aCustomer; loop = false; } }
 			 */
-			
+
 			parent.customer = parent.getCustomerService().getCustomer(customerID);
 
-			if (found == false) {
+			if (parent.customer == null) {
 				int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 						JOptionPane.YES_NO_OPTION);
 				if (reply == JOptionPane.YES_OPTION) {

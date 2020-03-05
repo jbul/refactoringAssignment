@@ -20,131 +20,102 @@ import refactoring.Menu;
 import refactoring.listeners.general.ReturnButtonListener;
 import refactoring.service.AccountService;
 
-public class BankChargesButtonListener implements ActionListener {
-	
-	Menu parent;
-	
+public class BankChargesButtonListener extends AdminActionListener {
+
 	AccountService accountService = new AccountService();
-	
+
 	public BankChargesButtonListener(Menu parent) {
-		this.parent = parent;
+		 super(parent);
 	}
-	
-	public void actionPerformed(ActionEvent ae) {
-  //TODO Same as AccountButtonListner
-		boolean loop = true;
 
-		if (parent.getCustomerService().isEmpty()) {
-			JOptionPane.showMessageDialog(parent.frame, "There are no customers yet!", "Oops!",
-					JOptionPane.INFORMATION_MESSAGE);
-			parent.frame.dispose();
-			parent.admin();
-
-		} else {
-			while (loop) {
-				Object customerID = JOptionPane.showInputDialog(parent.frame,
-						"Customer ID of Customer You Wish to Apply Charges to:");
-
-				parent.customer = parent.getCustomerService().getCustomer(customerID);
-				
-				if (parent.customer == null) {
-					int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-							JOptionPane.YES_NO_OPTION);
-					if (reply == JOptionPane.YES_OPTION) {
-						loop = true;
-					} else if (reply == JOptionPane.NO_OPTION) {
-						parent.frame.dispose();
-						loop = false;
-
-						parent.admin();
-					}
-					// end 
-				} else {
-					loop = false;
-					
-					parent.frame.dispose();
-					parent.frame = new JFrame("Administrator Menu");
-					parent.frame.setSize(400, 300);
-					parent.frame.setLocation(200, 200);
-					parent.frame.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) {
-							System.exit(0);
-						}
-					});
-					parent.frame.setVisible(true);
-
-					JComboBox<String> box = new JComboBox<String>();
-					for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
-
-						box.addItem(parent.customer.getAccounts().get(i).getNumber());
-					}
-
-					box.getSelectedItem();
-
-					JPanel boxPanel = new JPanel();
-					boxPanel.add(box);
-
-					JPanel buttonPanel = new JPanel();
-					JButton continueButton = new JButton("Apply Charge");
-					JButton returnButton = new JButton("Return");
-					buttonPanel.add(continueButton);
-					buttonPanel.add(returnButton);
-					Container content = parent.frame.getContentPane();
-					content.setLayout(new GridLayout(2, 1));
-
-					content.add(boxPanel);
-					content.add(buttonPanel);
-
-					if (parent.customer.getAccounts().isEmpty()) {
-						JOptionPane.showMessageDialog(parent.frame,
-								"This customer has no accounts! \n The admin must add acounts to this customer.",
-								"Oops!", JOptionPane.INFORMATION_MESSAGE);
-						parent.frame.dispose();
-						parent.admin();
-					} else {
-						
-						continueButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent ae) {
-								String euro = "\u20ac";
-								// TODO Fixed bug, account was not selected properly
-								for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
-									if (parent.customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-										parent.customerAccount = parent.customer.getAccounts().get(i);
-									}
-								}
-								
-								if (parent.customerAccount.isDeposit()) {
-
-									JOptionPane.showMessageDialog(parent.frame,
-											"25" + euro + " deposit account fee aplied.", "",
-											JOptionPane.INFORMATION_MESSAGE);
-									
-								} else {
-										
-								//if (parent.customerAccount instanceof CustomerCurrentAccount) {
-
-									JOptionPane.showMessageDialog(parent.frame,
-											"15" + euro + " current account fee aplied.", "",
-											JOptionPane.INFORMATION_MESSAGE);
-									
-								}
-								
-								// TODO Duplicated code in if statement, moved out. Only keeping message about number applied in if
-								accountService.applyFee(parent.customerAccount);
-								JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance(),
-										"Success!", JOptionPane.INFORMATION_MESSAGE);
-								
-								parent.frame.dispose();
-								parent.admin();
-							}
-						});
-
-						returnButton.addActionListener(new ReturnButtonListener(parent));
-					}
-				}
+	@Override
+	void performAdminAction() {
+		parent.frame.dispose();
+		parent.frame = new JFrame("Administrator Menu");
+		parent.frame.setSize(400, 300);
+		parent.frame.setLocation(200, 200);
+		parent.frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				System.exit(0);
 			}
+		});
+		parent.frame.setVisible(true);
+
+		JComboBox<String> box = new JComboBox<String>();
+		for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
+
+			box.addItem(parent.customer.getAccounts().get(i).getNumber());
 		}
 
+		box.getSelectedItem();
+
+		JPanel boxPanel = new JPanel();
+		boxPanel.add(box);
+
+		JPanel buttonPanel = new JPanel();
+		JButton continueButton = new JButton("Apply Charge");
+		JButton returnButton = new JButton("Return");
+		buttonPanel.add(continueButton);
+		buttonPanel.add(returnButton);
+		Container content = parent.frame.getContentPane();
+		content.setLayout(new GridLayout(2, 1));
+
+		content.add(boxPanel);
+		content.add(buttonPanel);
+
+		if (parent.customer.getAccounts().isEmpty()) {
+			JOptionPane.showMessageDialog(parent.frame,
+					"This customer has no accounts! \n The admin must add acounts to this customer.",
+					"Oops!", JOptionPane.INFORMATION_MESSAGE);
+			parent.frame.dispose();
+			parent.admin();
+		} else {
+
+			continueButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					String euro = "\u20ac";
+					// TODO Fixed bug, account was not selected properly
+					for (int i = 0; i < parent.customer.getAccounts().size(); i++) {
+						if (parent.customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+							parent.customerAccount = parent.customer.getAccounts().get(i);
+						}
+					}
+
+					if (parent.customerAccount.isDeposit()) {
+
+						JOptionPane.showMessageDialog(parent.frame,
+								"25" + euro + " deposit account fee aplied.", "",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					} else {
+
+						// if (parent.customerAccount instanceof CustomerCurrentAccount) {
+
+						JOptionPane.showMessageDialog(parent.frame,
+								"15" + euro + " current account fee aplied.", "",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					}
+
+					// TODO Duplicated code in if statement, moved out. Only keeping message about
+					// number applied in if
+					accountService.applyFee(parent.customerAccount);
+					JOptionPane.showMessageDialog(parent.frame,
+							"New balance = " + parent.customerAccount.getBalance(), "Success!",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					parent.frame.dispose();
+					parent.admin();
+				}
+			});
+
+			returnButton.addActionListener(new ReturnButtonListener(parent));
+		}
+	}
+
+	@Override
+	String getMessageString() {
+		return "Customer ID of Customer You Wish to Apply Charges to:";
 	}
 
 }
