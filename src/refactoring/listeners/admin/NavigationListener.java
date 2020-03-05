@@ -109,7 +109,6 @@ public class NavigationListener implements ActionListener {
 						// don't do anything
 					} else {
 						parent.position = parent.position - 1;
-
 						setDetails(parent.position);
 
 					}
@@ -120,7 +119,7 @@ public class NavigationListener implements ActionListener {
 				public void actionPerformed(ActionEvent ae) {
 
 					if (parent.position == parent.getCustomerService().size() - 1) {
-						// don't do anything
+						// TODO don't do anything -> what are we supposed to do ?
 					} else {
 						parent.position = parent.position + 1;
 						setDetails(parent.position);

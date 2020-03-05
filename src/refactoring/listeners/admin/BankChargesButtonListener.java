@@ -31,7 +31,7 @@ public class BankChargesButtonListener implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent ae) {
-
+  //TODO Same as AccountButtonListner
 		boolean loop = true;
 
 		if (parent.getCustomerService().isEmpty()) {
@@ -58,7 +58,7 @@ public class BankChargesButtonListener implements ActionListener {
 
 						parent.admin();
 					}
-					
+					// end 
 				} else {
 					loop = false;
 					

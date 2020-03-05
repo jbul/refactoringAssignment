@@ -33,9 +33,6 @@ public class AccountButtonListener implements ActionListener{
 			parent.admin();
 		} else {
 			boolean loop = true;
-
-			boolean found = false;
-
 			while (loop) {
 				Object customerID = JOptionPane.showInputDialog(parent.frame,
 						"Customer ID of Customer You Wish to Add an Account to:");
