@@ -16,7 +16,7 @@ import refactoring.service.AccountService;
 
 public class AccountButtonListener extends AdminActionListener {
 
-	AccountService accountService = new AccountService();
+	AccountService accountService = AccountService.getInstance();
 
 	public AccountButtonListener(Menu parent) {
 		super(parent);

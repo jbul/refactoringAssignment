@@ -22,7 +22,7 @@ import refactoring.service.AccountService;
 
 public class BankChargesButtonListener extends AdminActionListener {
 
-	AccountService accountService = new AccountService();
+	AccountService accountService = AccountService.getInstance();
 
 	public BankChargesButtonListener(Menu parent) {
 		 super(parent);

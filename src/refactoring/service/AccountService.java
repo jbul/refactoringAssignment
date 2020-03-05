@@ -3,8 +3,10 @@ package refactoring.service;
 import refactoring.CustomerAccount;
 
 public class AccountService {
-
-	public AccountService() {
+	
+	private static AccountService instance = new AccountService();
+	
+	private AccountService() {
 
 	}
 
@@ -29,6 +31,10 @@ public class AccountService {
 	
 	public void withdrawOperation(CustomerAccount account, double withdraw) {
 		account.setBalance(account.getBalance() - withdraw);
+	}
+	
+	public static AccountService getInstance() {
+		return instance;
 	}
 
 }

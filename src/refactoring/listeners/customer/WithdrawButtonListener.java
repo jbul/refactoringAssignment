@@ -12,7 +12,7 @@ import refactoring.service.AccountService;
 public class WithdrawButtonListener extends TransactionButtonListener {
 
 	//Menu parent;
-	AccountService accountService = new AccountService();
+	AccountService accountService = AccountService.getInstance();
 
 	public WithdrawButtonListener(Menu parent) {
 		//this.parent = parent;
