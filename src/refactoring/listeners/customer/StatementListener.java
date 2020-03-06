@@ -16,16 +16,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import refactoring.Menu;
+import refactoring.constants.ButtonConstants;
+import refactoring.constants.TransactionConstants;
 import refactoring.listeners.general.ReturnButtonListener;
 
 public class StatementListener implements ActionListener {
-	
+
 	Menu parent;
-	
+
 	public StatementListener(Menu menu) {
 		parent = menu;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
@@ -40,10 +42,10 @@ public class StatementListener implements ActionListener {
 		});
 		parent.frame.setVisible(true);
 
-		JLabel label1 = new JLabel("Summary of account transactions: ");
+		JLabel label1 = new JLabel(TransactionConstants.TRANSACTION_SUMMARY);
 
 		JPanel returnPanel = new JPanel();
-		JButton returnButton = new JButton("Return");
+		JButton returnButton = new JButton(ButtonConstants.RETURN);
 		returnPanel.add(returnButton);
 
 		JPanel textPanel = new JPanel();
@@ -68,12 +70,9 @@ public class StatementListener implements ActionListener {
 
 		Container content = parent.frame.getContentPane();
 		content.setLayout(new GridLayout(1, 1));
-		// content.add(label1);
 		content.add(textPanel);
-		// content.add(returnPanel);
 
 		returnButton.addActionListener(new ReturnButtonListener(parent));
-	
-		
-	}	
+
+	}
 }

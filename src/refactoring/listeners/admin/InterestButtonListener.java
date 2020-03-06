@@ -14,8 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import refactoring.Customer;
 import refactoring.Menu;
+import refactoring.constants.ButtonConstants;
+import refactoring.constants.Constants;
+import refactoring.constants.MessageConstants;
 import refactoring.listeners.general.ReturnButtonListener;
 import refactoring.service.AccountService;
 
@@ -55,7 +57,7 @@ public class InterestButtonListener extends AdminActionListener {
 		boxPanel.add(box);
 		JPanel buttonPanel = new JPanel();
 		JButton continueButton = new JButton("Apply Interest");
-		JButton returnButton = new JButton("Return");
+		JButton returnButton = new JButton(ButtonConstants.RETURN);
 		buttonPanel.add(continueButton);
 		buttonPanel.add(returnButton);
 		Container content = parent.frame.getContentPane();
@@ -66,7 +68,7 @@ public class InterestButtonListener extends AdminActionListener {
 
 		if (parent.customer.getAccounts().isEmpty()) {
 			JOptionPane.showMessageDialog(parent.frame,
-					"This customer has no accounts! \n The admin must add acounts to this customer.", "Oops!",
+					"This customer has no accounts! \n The admin must add acounts to this customer.", Constants.OOPS,
 					JOptionPane.INFORMATION_MESSAGE);
 			parent.frame.dispose();
 			parent.admin();
@@ -80,7 +82,6 @@ public class InterestButtonListener extends AdminActionListener {
 
 			continueButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					String euro = "\u20ac";
 					double interest = 0;
 					boolean loop = true;
 
@@ -94,24 +95,21 @@ public class InterestButtonListener extends AdminActionListener {
 						String interestString = JOptionPane.showInputDialog(parent.frame,
 								"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");
 
-						// TODO Move isNumeric in external class ?
 						if (Menu.isNumeric(interestString)) {
 
 							interest = Double.parseDouble(interestString);
 							loop = false;
 
 							accountService.applyInterest(parent.customerAccount, interest);
-							// parent.customerAccount.getBalance() + (parent.customerAccount.getBalance() *
-							// (interest / 100)));
 
 							JOptionPane.showMessageDialog(parent.frame,
 									interest + "% interest applied. \n new balance = "
-											+ parent.customerAccount.getBalance() + euro,
-									"Success!", JOptionPane.INFORMATION_MESSAGE);
+											+ parent.customerAccount.getBalance() + Constants.EURO,
+									Constants.SUCCESS, JOptionPane.INFORMATION_MESSAGE);
 						}
 
 						else {
-							JOptionPane.showMessageDialog(parent.frame, "You must enter a numerical value!", "Oops!",
+							JOptionPane.showMessageDialog(parent.frame, MessageConstants.INCORRECT_NUMERIC_VALUE, Constants.EURO,
 									JOptionPane.INFORMATION_MESSAGE);
 						}
 

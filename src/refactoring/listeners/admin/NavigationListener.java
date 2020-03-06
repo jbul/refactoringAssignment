@@ -105,26 +105,28 @@ public class NavigationListener implements ActionListener {
 			previous.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 
-					if (parent.position < 1) {
-						// don't do anything
-					} else {
+					if (parent.position > 0) {
 						parent.position = parent.position - 1;
 						setDetails(parent.position);
-
 					}
 				}
 			});
 
 			next.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-
-					if (parent.position == parent.getCustomerService().size() - 1) {
-						// TODO don't do anything -> what are we supposed to do ?
-					} else {
+					
+					if (parent.position < parent.getCustomerService().size()) {
+						
 						parent.position = parent.position + 1;
 						setDetails(parent.position);
-
-					}
+					}	
+//					if (parent.position == parent.getCustomerService().size() - 1) {
+//						// TODO don't do anything -> what are we supposed to do ?
+//					} else {
+//						parent.position = parent.position + 1;
+//						setDetails(parent.position);
+//
+//					}
 
 				}
 			});

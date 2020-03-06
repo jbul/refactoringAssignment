@@ -1,140 +1,55 @@
 package refactoring.listeners.customer;
 
-import java.awt.event.ActionEvent;
 import java.util.Date;
-
 import javax.swing.JOptionPane;
-
 import refactoring.AccountTransaction;
 import refactoring.Menu;
+import refactoring.constants.Constants;
+import refactoring.constants.MessageConstants;
+import refactoring.constants.TransactionConstants;
 import refactoring.service.AccountService;
 
 public class WithdrawButtonListener extends TransactionButtonListener {
 
-	//Menu parent;
 	AccountService accountService = AccountService.getInstance();
 
 	public WithdrawButtonListener(Menu parent) {
-		//this.parent = parent;
 		super(parent);
 	}
 
-	public void actionPerformed(ActionEvent ae) {
-		
-		checkPin();
-		/*
-		 * boolean loop = true; boolean on = true; double withdraw = 0;
-		 * 
-		 * if (parent.customerAccount instanceof CustomerCurrentAccount) { int count =
-		 * 3; int checkPin = ((CustomerCurrentAccount)
-		 * parent.customerAccount).getAtm().getPin(); loop = true;
-		 * 
-		 * while (loop) { if (count == 0) { JOptionPane.showMessageDialog(parent.frame,
-		 * "Pin entered incorrectly 3 times. ATM card locked.", "Pin",
-		 * JOptionPane.INFORMATION_MESSAGE); ((CustomerCurrentAccount)
-		 * parent.customerAccount).getAtm().setValid(false);
-		 * parent.customer(parent.cust); loop = false; on = false; }
-		 * 
-		 * String Pin = JOptionPane.showInputDialog(parent.frame, "Enter 4 digit PIN;");
-		 * int i = Integer.parseInt(Pin);
-		 * 
-		 * if (on) { if (checkPin == i) { loop = false;
-		 * JOptionPane.showMessageDialog(parent.frame, "Pin entry successful", "Pin",
-		 * JOptionPane.INFORMATION_MESSAGE);
-		 * 
-		 * } else { count--; JOptionPane.showMessageDialog(parent.frame,
-		 * "Incorrect pin. " + count + " attempts remaining.", "Pin",
-		 * JOptionPane.INFORMATION_MESSAGE);
-		 * 
-		 * }
-		 * 
-		 * } }
-		 * 
-		 * }
-		 */
-		double withdraw = 0.0;
-		if (on == true) {
-			String balanceTest = JOptionPane.showInputDialog(parent.frame, "Enter amount you wish to withdraw (max 500):");
-			if (Menu.isNumeric(balanceTest)) {
-
-				withdraw = Double.parseDouble(balanceTest);
-				loop = false;
-
-			} else {
-				JOptionPane.showMessageDialog(parent.frame, "You must enter a numerical value!", "Oops!",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-			if (withdraw > 500) {
-				JOptionPane.showMessageDialog(parent.frame, "500 is the maximum you can withdraw at a time.", "Oops!",
-						JOptionPane.INFORMATION_MESSAGE);
-				withdraw = 0;
-			}
-			if (withdraw > parent.customerAccount.getBalance()) {
-				JOptionPane.showMessageDialog(parent.frame, "Insufficient funds.", "Oops!",
-						JOptionPane.INFORMATION_MESSAGE);
-				withdraw = 0;
-			}
-
-			String euro = "\u20ac";
-			accountService.withdrawOperation(parent.customerAccount, withdraw);
-			//parent.customerAccount.setBalance(accountService.withdrawOperation(parent.customerAccount.getBalance(), withdraw));
-					//parent.customerAccount.getBalance() - withdraw);
-			// recording transaction:
-			// String date = new
-			// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-			Date date = new Date();
-			String date2 = date.toString();
-
-			String type = "Withdraw";
-			double amount = withdraw;
-
-			AccountTransaction transaction = new AccountTransaction(date2, type, amount);
-			parent.customerAccount.getTransactionList().add(transaction);
-
-			JOptionPane.showMessageDialog(parent.frame, withdraw + euro + " withdrawn.", "Withdraw",
-					JOptionPane.INFORMATION_MESSAGE);
-			JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance() + euro, "Withdraw",
-					JOptionPane.INFORMATION_MESSAGE);
-		}
-
-	}
-	
-	
-	
 	@Override
 	public double getAmount() {
 		double withdraw = 0.0;
-		
-		String balanceTest = JOptionPane.showInputDialog(parent.frame, "Enter amount you wish to withdraw (max 500):");
-		
+		String balanceTest = JOptionPane.showInputDialog(parent.frame, MessageConstants.WITHDRAW_AMOUNT_MESSAGE);
+
 		if (Menu.isNumeric(balanceTest)) {
 
 			withdraw = Double.parseDouble(balanceTest);
 			loop = false;
 
 		} else {
-			JOptionPane.showMessageDialog(parent.frame, "You must enter a numerical value!", "Oops!",
+			JOptionPane.showMessageDialog(parent.frame, MessageConstants.INCORRECT_NUMERIC_VALUE, Constants.OOPS,
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 		if (withdraw > 500) {
-			JOptionPane.showMessageDialog(parent.frame, "500 is the maximum you can withdraw at a time.", "Oops!",
+			JOptionPane.showMessageDialog(parent.frame, TransactionConstants.MAX_WITHDRAW_VALUE, Constants.OOPS,
 					JOptionPane.INFORMATION_MESSAGE);
 			withdraw = 0;
 		}
-		
+
 		if (withdraw > parent.customerAccount.getBalance()) {
-			JOptionPane.showMessageDialog(parent.frame, "Insufficient funds.", "Oops!",
+			JOptionPane.showMessageDialog(parent.frame, TransactionConstants.INSUFFICIENT_FUNDS,Constants.OOPS,
 					JOptionPane.INFORMATION_MESSAGE);
 			withdraw = 0;
 		}
-		
+
 		return withdraw;
 	}
 
 	@Override
 	public AccountTransaction performTransaction(double withdraw) {
-		
+
 		accountService.withdrawOperation(parent.customerAccount, withdraw);
 		Date date = new Date();
 		String date2 = date.toString();
@@ -148,15 +63,10 @@ public class WithdrawButtonListener extends TransactionButtonListener {
 
 	@Override
 	public void showResults(double amount) {
-		// TODO Auto-generated method stub
-		String euro = "\u20ac";
-		JOptionPane.showMessageDialog(parent.frame, amount + euro + " withdrawn.", "Withdraw",
+		JOptionPane.showMessageDialog(parent.frame, amount + Constants.EURO + " withdrawn.", TransactionConstants.TYPE_WITHDRAW,
 				JOptionPane.INFORMATION_MESSAGE);
-		JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance() + euro, "Withdraw",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(parent.frame, "New balance = " + parent.customerAccount.getBalance() + Constants.EURO,
+				TransactionConstants.TYPE_WITHDRAW, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	
-	
 
 }

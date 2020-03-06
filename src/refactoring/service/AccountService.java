@@ -1,27 +1,25 @@
 package refactoring.service;
 
 import refactoring.CustomerAccount;
+import refactoring.constants.AccountConstants;
 
 public class AccountService {
 	
 	private static AccountService instance = new AccountService();
 	
-	private AccountService() {
-
-	}
+	private AccountService() {}
 
 	public int randomPin() {
-
 		return (int) (Math.random() * 9000) + 1000;
 	}
 
 	public String generateAccountNumber(int customerIndex, int customerAccountSize, boolean isDeposit) {
-		String accountType = isDeposit ? "D" : "C";
+		String accountType = isDeposit ? AccountConstants.DEPOSIT_ACCOUNT_PREFIX : AccountConstants.CURRENT_ACCOUNT_PREFIX;
 		return String.valueOf(accountType + (customerIndex + 1) * 10 + (customerAccountSize + 1));
 	}
 
 	public void applyFee(CustomerAccount account) {
-		double fee = account.isDeposit() ? 25 : 15;
+		double fee = account.isDeposit() ? AccountConstants.DEPOSIT_ACCOUNT_FEE : AccountConstants.CURRENT_ACCOUNT_FEE;
 		account.setBalance(account.getBalance() - fee);
 	}
 
