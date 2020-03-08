@@ -133,15 +133,12 @@ public class Menu extends JFrame {
 				// if user selects NEW CUSTOMER
 				switch (user) {
 				case Constants.NEW_CUSTOMER:
-
 					newCustomerSwitch();
 					break;
-
 				// if user select ADMIN
 				case Constants.ADMIN:
 					adminSwitch();
 					break;
-
 				// if user selects CUSTOMER
 				case "Customer":
 					customerSwitch();
