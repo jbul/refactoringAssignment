@@ -63,28 +63,6 @@ public class Menu extends JFrame {
 
 	public static void main(String[] args) {
 		Menu driver = new Menu();
-
-		List<CustomerAccount> ca = new ArrayList<>(
-				Arrays.asList(new CustomerDepositAccount(1.5, "D1234", 2000.0, new ArrayList<AccountTransaction>())));
-		ca.add(new CustomerCurrentAccount(new ATMCard(1234, true), "C1234", 1000.0,
-				new ArrayList<AccountTransaction>()));
-		driver.getCustomerService().addCustomer(new Customer("1234", "Bob", "Joack", "12091989", "ID1234", "1234", ca));
-
-		List<CustomerAccount> ca2 = new ArrayList<>(
-				Arrays.asList(new CustomerDepositAccount(1.5, "ID12345", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService()
-				.addCustomer(new Customer("12345", "Sarah", "Croche", "12091989", "ID12345", "12345", ca2));
-
-		List<CustomerAccount> ca3 = new ArrayList<>(
-				Arrays.asList(new CustomerDepositAccount(1.5, "ID12346", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService()
-				.addCustomer(new Customer("12346", "Lara", "Clette", "12091989", "ID12346", "12346", ca3));
-
-		List<CustomerAccount> ca4 = new ArrayList<>(
-				Arrays.asList(new CustomerDepositAccount(1.5, "ID12347", 2000.0, new ArrayList<AccountTransaction>())));
-		driver.getCustomerService()
-				.addCustomer(new Customer("12347", "Dede", "Lirant", "12091989", "ID12347", "12347", ca4));
-
 		driver.menuStart();
 	}
 
